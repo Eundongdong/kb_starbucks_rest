@@ -1,5 +1,6 @@
 package com.my.config;
 
+import com.my.product.vo.Product;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -50,7 +51,7 @@ public class AppConfig {
         sessionFactory.setConfiguration(configuration);
 
         Resource[] mapperLocations = new Resource[] {
-                //new ClassPathResource("mapper/BoardMapper.xml")
+                new ClassPathResource("mapper/ProductMapper.xml")
         };
         sessionFactory.setMapperLocations(mapperLocations);
 
@@ -60,6 +61,7 @@ public class AppConfig {
         org.apache.ibatis.session.Configuration configuration =
                 new org.apache.ibatis.session.Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
+        configuration.getTypeAliasRegistry().registerAlias("Product", Product.class);
        return configuration;
     }
 
