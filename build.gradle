@@ -49,6 +49,10 @@ dependencies {
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.2'
 
+// JSP, SERVLET, JSTL
+  implementation('javax.servlet:javax.servlet-api:4.0.1')
+  compileOnly 'javax.servlet.jsp:jsp-api:2.1'
+  implementation 'javax.servlet:jstl:1.2'
 
 
 
