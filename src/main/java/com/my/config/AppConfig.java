@@ -1,5 +1,7 @@
 package com.my.config;
 
+import com.my.order.vo.OrderInfo;
+import com.my.order.vo.OrderLine;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -27,7 +29,7 @@ public class AppConfig {
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true");
+        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true");
 
         config.setUsername("root");
         config.setPassword("1234");
@@ -60,6 +62,8 @@ public class AppConfig {
         org.apache.ibatis.session.Configuration configuration =
                 new org.apache.ibatis.session.Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
+        configuration.getTypeAliasRegistry().registerAlias("OrderLine", OrderLine.class);
+        configuration.getTypeAliasRegistry().registerAlias("OrderInfo", OrderInfo.class);
        return configuration;
     }
 
