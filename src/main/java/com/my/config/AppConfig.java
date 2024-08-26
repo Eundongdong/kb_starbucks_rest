@@ -1,5 +1,7 @@
 package com.my.config;
 
+import com.my.order.vo.OrderInfo;
+import com.my.order.vo.OrderLine;
 import com.my.customer.vo.Customer;
 import com.my.product.vo.Product;
 import com.zaxxer.hikari.HikariConfig;
@@ -12,14 +14,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
-//@ComponentScan(basePackages = "com.multi")
-@ComponentScan(basePackages = {"com.my",
-        "com.my"
-})
+@EnableTransactionManagement
+@ComponentScan(basePackages = "com.my")
 public class AppConfig {
     public AppConfig() {
         System.out.println("AppConfig created");
@@ -29,7 +32,7 @@ public class AppConfig {
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true");
+        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/shop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&useUnicode=true&allowMultiQueries=true");
 
         config.setUsername("root");
         config.setPassword("1234");
@@ -53,7 +56,9 @@ public class AppConfig {
 
         Resource[] mapperLocations = new Resource[] {
                 new ClassPathResource("mapper/ProductMapper.xml"),
-                new ClassPathResource("mapper/CustomerMapper.xml")
+                new ClassPathResource("mapper/CustomerMapper.xml"),
+                new ClassPathResource("mapper/OrderMapper.xml")
+
         };
         sessionFactory.setMapperLocations(mapperLocations);
 
@@ -64,6 +69,8 @@ public class AppConfig {
                 new org.apache.ibatis.session.Configuration();
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.getTypeAliasRegistry().registerAlias("Product", Product.class);
+        configuration.getTypeAliasRegistry().registerAlias("OrderLine", OrderLine.class);
+        configuration.getTypeAliasRegistry().registerAlias("OrderInfo", OrderInfo.class);
         configuration.getTypeAliasRegistry().registerAlias("Customer", Customer.class);
        return configuration;
     }
@@ -71,6 +78,11 @@ public class AppConfig {
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
 }
