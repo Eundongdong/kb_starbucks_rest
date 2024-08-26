@@ -14,10 +14,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "com.my")
 public class AppConfig {
     public AppConfig() {
@@ -52,7 +56,9 @@ public class AppConfig {
 
         Resource[] mapperLocations = new Resource[] {
                 new ClassPathResource("mapper/ProductMapper.xml"),
-                new ClassPathResource("mapper/CustomerMapper.xml")
+                new ClassPathResource("mapper/CustomerMapper.xml"),
+                new ClassPathResource("mapper/OrderMapper.xml")
+
         };
         sessionFactory.setMapperLocations(mapperLocations);
 
@@ -72,6 +78,11 @@ public class AppConfig {
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
 }
