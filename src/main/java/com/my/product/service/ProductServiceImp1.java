@@ -1,5 +1,6 @@
 package com.my.product.service;
 
+import com.my.product.exception.FindException;
 import com.my.product.mapper.ProductMapper;
 import com.my.product.vo.Product;
 import org.apache.ibatis.session.SqlSession;
@@ -19,9 +20,13 @@ public class ProductServiceImp1 implements ProductService {
     }
 
     @Override
-    public List<Product> list() {
+    public List<Product> list() throws FindException {
         ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+
         List<Product> list = mapper.findAll();
+        if(list.isEmpty()){
+            throw new FindException();
+        }
         return list;
     }
 
