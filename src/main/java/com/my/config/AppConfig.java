@@ -18,8 +18,7 @@ import org.springframework.core.io.Resource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.multi")
-
+@ComponentScan(basePackages = "com.my")
 public class AppConfig {
     public AppConfig() {
         System.out.println("AppConfig created");
