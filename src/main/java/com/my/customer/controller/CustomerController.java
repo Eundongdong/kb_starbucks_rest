@@ -2,6 +2,7 @@ package com.my.customer.controller;
 
 import com.my.customer.service.CustomerService;
 import com.my.customer.vo.Customer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/")
+@Slf4j
 public class CustomerController {
     private CustomerService customerService;
     @Autowired
@@ -22,6 +24,7 @@ public class CustomerController {
     public ResponseEntity login(String id, String pwd, HttpSession session ){
         customerService.login(id,pwd);
         session.setAttribute("loginedId",id);
+        log.info("loginedId{}",session.getAttribute("loginedId"));
         return ResponseEntity.ok().build();
     }
 
@@ -38,13 +41,14 @@ public class CustomerController {
     @PostMapping("signup")
     public ResponseEntity signup(String id, String pwd, String name){
         customerService.signup(new Customer(id,pwd,name));
+        log.info("signup{}",id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("logout")
     public void logout(HttpSession session){
-            session.invalidate();
-        System.out.println("logout");
+        session.invalidate();
+        log.info("logout");
     }
 
 
