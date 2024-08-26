@@ -2,6 +2,7 @@ package com.my.config;
 
 import com.my.order.vo.OrderInfo;
 import com.my.order.vo.OrderLine;
+import com.my.customer.vo.Customer;
 import com.my.product.vo.Product;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -17,10 +18,8 @@ import org.springframework.core.io.Resource;
 import javax.sql.DataSource;
 
 @Configuration
-//@ComponentScan(basePackages = "com.multi")
-@ComponentScan(basePackages = {"com.my",
-        "com.my"
-})
+@ComponentScan(basePackages = "com.multi")
+
 public class AppConfig {
     public AppConfig() {
         System.out.println("AppConfig created");
@@ -53,8 +52,8 @@ public class AppConfig {
         sessionFactory.setConfiguration(configuration);
 
         Resource[] mapperLocations = new Resource[] {
-                //new ClassPathResource("mapper/BoardMapper.xml")
-                new ClassPathResource("mapper/OrderMapper.xml")
+                new ClassPathResource("mapper/ProductMapper.xml"),
+                new ClassPathResource("mapper/CustomerMapper.xml")
         };
         sessionFactory.setMapperLocations(mapperLocations);
 
@@ -67,6 +66,7 @@ public class AppConfig {
         configuration.getTypeAliasRegistry().registerAlias("Product", Product.class);
         configuration.getTypeAliasRegistry().registerAlias("OrderLine", OrderLine.class);
         configuration.getTypeAliasRegistry().registerAlias("OrderInfo", OrderInfo.class);
+        configuration.getTypeAliasRegistry().registerAlias("Customer", Customer.class);
        return configuration;
     }
 
