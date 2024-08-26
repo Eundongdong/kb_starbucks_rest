@@ -1,5 +1,7 @@
 package com.my.customer.controller;
 
+import com.my.customer.exception.AddException;
+import com.my.customer.exception.FindException;
 import com.my.customer.service.CustomerService;
 import com.my.customer.vo.Customer;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ public class CustomerController {
     }
 
     @PostMapping("login")
-    public ResponseEntity login(String id, String pwd, HttpSession session ){
+    public ResponseEntity login(String id, String pwd, HttpSession session ) throws FindException {
         customerService.login(id,pwd);
         session.setAttribute("loginedId",id);
         log.info("loginedId{}",session.getAttribute("loginedId"));
@@ -29,7 +31,7 @@ public class CustomerController {
     }
 
     @GetMapping("login/{id}")
-    public ResponseEntity idDupChk(@PathVariable String id){
+    public ResponseEntity idDupChk(@PathVariable String id) throws FindException {
         Customer c = customerService.showMyInfo(id);
         if(c != null){
             return ResponseEntity.badRequest().build();
@@ -39,7 +41,7 @@ public class CustomerController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity signup(String id, String pwd, String name){
+    public ResponseEntity signup(String id, String pwd, String name) throws AddException {
         customerService.signup(new Customer(id,pwd,name));
         log.info("signup{}",id);
         return ResponseEntity.ok().build();
