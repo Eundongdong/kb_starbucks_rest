@@ -8,11 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@WebAppConfiguration
 @ExtendWith(SpringExtension.class) //SpringFramework JUnit 실행 가능하도록 설정한다.
 @ContextConfiguration(classes = com.my.config.AppConfig.class)
 public class ProductServiceTest {
