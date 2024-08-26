@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> list() throws FindException;
-    Product detail(String prodNo);
+    Product detail(String prodNo) throws FindException;
 }

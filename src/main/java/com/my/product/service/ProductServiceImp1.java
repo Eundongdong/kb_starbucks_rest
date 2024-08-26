@@ -31,8 +31,14 @@ public class ProductServiceImp1 implements ProductService {
     }
 
     @Override
-    public Product detail(String prodNo) {
+    public Product detail(String prodNo) throws FindException {
         ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
-        return mapper.findById(prodNo);
+
+        Product p =mapper.findById(prodNo);
+        if(p == null){
+            throw new FindException();
+        }
+
+        return p;
     }
 }
