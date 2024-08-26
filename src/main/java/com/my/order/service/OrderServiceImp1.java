@@ -25,6 +25,7 @@ public class OrderServiceImp1 implements OrderService {
         this.sqlSession = sqlSession;
     }
 
+    //TODO addInfo, addLine 함수로 나누기
     @Override
     public OrderInfo add(String loginedId, Map<String, Integer> cart) {
         OrderInfo info = new OrderInfo();
@@ -46,8 +47,10 @@ public class OrderServiceImp1 implements OrderService {
         log.info("info{}",info);
         OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
         //TODO Transaction으로 관리해야함
-        mapper.insert(info);
-        System.out.println("insert 완료");
+        mapper.insertInfo(info);
+        for(OrderLine line : lines){
+            mapper.insertLine(line);
+        }
         return info;
     }
 

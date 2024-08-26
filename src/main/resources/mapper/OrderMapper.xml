@@ -3,15 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.my.order.mapper.OrderMapper">
-    <insert id="insert" parameterType="OrderInfo">
+    <insert id="insertInfo" parameterType="OrderInfo">
         INSERT INTO order_info(order_id)
-        VALUES (#{orderId});
-        <foreach collection="OrderLine" item="line" separator=",">
-            INSERT INTO order_line (order_no,order_prod_no, order_quantity)
-            VALUES (LAST_INSERT_ID(),#{line.orderP().getProdNo()},#{line.orderQuantity())";
-        </foreach>
-    </insert>
+        VALUES (#{orderId})
 
+    </insert>
+    <insert id="insertLine" parameterType="OrderLine">
+        INSERT INTO order_line (order_no,order_prod_no, order_quantity)
+        VALUES (LAST_INSERT_ID(),#{orderP.prodNo},#{orderQuantity})
+    </insert>
 
     <select id="findByOrderId" resultType="OrderInfo">
         SELECT info.order_no, order_id, order_dt,
