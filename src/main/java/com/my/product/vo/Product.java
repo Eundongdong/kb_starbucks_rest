@@ -2,6 +2,8 @@ package com.my.product.vo;
 
 import lombok.*;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @Setter @Getter @ToString
 public class Product {
@@ -14,5 +16,14 @@ public class Product {
         prodName = "이름없음";
         prodPrice = 0;
     }
-
+    public Product(String prodNo, String prodName){
+        this(prodNo, prodName, 0);
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(prodNo, product.prodNo);
+    }
 }
