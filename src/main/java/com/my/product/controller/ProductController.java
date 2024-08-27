@@ -6,16 +6,17 @@ import com.my.product.vo.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 @Slf4j
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowCredentials = "true"
+)
 public class ProductController {
     private ProductService productService;
 
@@ -37,6 +38,10 @@ public class ProductController {
     }
 
     @GetMapping("/{prodNo}")
+    @CrossOrigin(
+            origins = "http://localhost:5173",
+            allowCredentials = "true"
+    )
     public ResponseEntity detail(@PathVariable String prodNo) throws FindException {
         Product product = productService.detail(prodNo);
         log.info("detail product{}", product);

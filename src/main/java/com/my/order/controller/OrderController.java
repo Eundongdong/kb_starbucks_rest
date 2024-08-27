@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -21,6 +19,10 @@ import java.util.Map;
 @Controller
 @Slf4j
 @RequestMapping("/order")
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowCredentials = "true"
+)
 public class OrderController {
     OrderService orderService;
 
@@ -30,6 +32,12 @@ public class OrderController {
     }
 
     @PostMapping("")
+    @CrossOrigin(
+            origins = "http://localhost:5173",
+            methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS},
+            allowedHeaders = {"Content-Type", "Authorization"},
+            allowCredentials = "true"
+    )
     public ResponseEntity add(HttpSession session) throws AddException {
         //session값가져오기
         String loginedId = (String) session.getAttribute("loginedId");
