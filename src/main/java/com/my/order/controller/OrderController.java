@@ -1,5 +1,6 @@
 package com.my.order.controller;
 
+import com.my.order.exception.AddException;
 import com.my.order.service.OrderService;
 import com.my.order.vo.OrderInfo;
 import com.my.order.vo.OrderLine;
@@ -29,7 +30,7 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public ResponseEntity add(HttpSession session){
+    public ResponseEntity add(HttpSession session) throws AddException {
         //session값가져오기
         String loginedId = (String) session.getAttribute("loginedId");
         //로그인 되어있지 않으면
