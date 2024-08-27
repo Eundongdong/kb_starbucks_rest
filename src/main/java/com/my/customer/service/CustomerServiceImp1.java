@@ -1,5 +1,6 @@
 package com.my.customer.service;
 
+import com.my.customer.exception.AddException;
 import com.my.customer.mapper.CustomerMapper;
 import com.my.customer.vo.Customer;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,7 +21,7 @@ public class CustomerServiceImp1 implements CustomerService {
 
 
     @Override
-    public void login(String id, String pwd) {
+    public void login(String id, String pwd) throws FindException {
         CustomerMapper mapper = sqlSession.getMapper(CustomerMapper.class);
         Customer c = mapper.findById(id);
         if(c.getPwd().equals(pwd)) {
@@ -31,13 +32,13 @@ public class CustomerServiceImp1 implements CustomerService {
     }
 
     @Override
-    public Customer showMyInfo(String id) {
+    public Customer showMyInfo(String id) throws FindException {
         CustomerMapper mapper = sqlSession.getMapper(CustomerMapper.class);
         return mapper.findById(id);
     }
 
     @Override
-    public void signup(Customer c) {
+    public void signup(Customer c) throws AddException {
         CustomerMapper mapper = sqlSession.getMapper(CustomerMapper.class);
         mapper.insert(c);
     }

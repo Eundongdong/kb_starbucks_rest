@@ -54,3 +54,5 @@ bin/
 *.iml
 *.ipr
 .idea/
+
+myapp.log

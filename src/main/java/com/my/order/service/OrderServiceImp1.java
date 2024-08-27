@@ -1,5 +1,6 @@
 package com.my.order.service;
 
+import com.my.order.exception.AddException;
 import com.my.order.mapper.OrderMapper;
 import com.my.order.vo.OrderInfo;
 import com.my.order.vo.OrderLine;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional
 @Slf4j
 public class OrderServiceImp1 implements OrderService {
     private SqlSessionTemplate sqlSession;
@@ -25,13 +25,12 @@ public class OrderServiceImp1 implements OrderService {
         this.sqlSession = sqlSession;
     }
 
-    //TODO addInfo, addLine 함수로 나누기
+    @Transactional(rollbackFor = AddException.class)
     @Override
-    public OrderInfo add(String loginedId, Map<String, Integer> cart) {
+    public OrderInfo add(String loginedId, Map<String, Integer> cart) throws AddException {
         OrderInfo info = new OrderInfo();
         info.setOrderId(loginedId);
         List<OrderLine> lines = new ArrayList<>();
-        System.out.println("cart 받아오기 시작");
         for(Map.Entry<String,Integer> e : cart.entrySet()){
             String prodNo = e.getKey();
             Integer quantity = e.getValue();
@@ -43,13 +42,19 @@ public class OrderServiceImp1 implements OrderService {
             lines.add(line);
         }
         info.setLines(lines);
-
         log.info("info{}",info);
         OrderMapper mapper = sqlSession.getMapper(OrderMapper.class);
-        //TODO Transaction으로 관리해야함
-        mapper.insertInfo(info);
-        for(OrderLine line : lines){
-            mapper.insertLine(line);
+        try{
+            mapper.insertInfo(info);
+        }catch(Exception e){
+            throw new AddException(e.getMessage());
+        }
+        try{
+            for(OrderLine line : lines){
+                mapper.insertLine(line);
+            }
+        }catch(Exception e){
+            throw new AddException(e.getMessage());
         }
         return info;
     }
