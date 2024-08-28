@@ -17,6 +17,10 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/cart")
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowCredentials = "true"
+)
 public class CartController {
 
     private CartService cartService;
@@ -26,6 +30,12 @@ public class CartController {
     }
 
     @PostMapping("")
+    @CrossOrigin(
+            origins = "http://localhost:5173",
+            methods = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE},
+            allowedHeaders = {"Content-Type", "Authorization"},
+            allowCredentials = "true"
+    )
     public ResponseEntity add(String prodNo, String quantity ,HttpSession session){
         Map<String, Integer> cart = (Map)session.getAttribute("cart");
         if(cart == null){

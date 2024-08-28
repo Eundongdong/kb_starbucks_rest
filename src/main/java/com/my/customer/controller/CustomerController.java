@@ -15,6 +15,10 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/")
 @Slf4j
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowCredentials = "true"
+)
 public class CustomerController {
     private CustomerService customerService;
     @Autowired
@@ -23,6 +27,12 @@ public class CustomerController {
     }
 
     @PostMapping("login")
+    @CrossOrigin(
+            origins = "http://localhost:5173",
+            methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS},
+            allowedHeaders = {"Content-Type", "Authorization"},
+            allowCredentials = "true"
+    )
     public ResponseEntity login(String id, String pwd, HttpSession session ) throws FindException {
         customerService.login(id,pwd);
         session.setAttribute("loginedId",id);
@@ -41,6 +51,12 @@ public class CustomerController {
     }
 
     @PostMapping("signup")
+    @CrossOrigin(
+            origins ="http://localhost:5173",
+            allowCredentials = "true",
+            methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS},
+            allowedHeaders = {"Content-Type", "Authorization"}
+    )
     public ResponseEntity signup(String id, String pwd, String name) throws AddException {
         customerService.signup(new Customer(id,pwd,name));
         log.info("signup{}",id);
