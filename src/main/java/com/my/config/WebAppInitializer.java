@@ -25,12 +25,15 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { WebConfig.class };
+        return new Class[] { WebConfig.class, SwaggerConfig.class };
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/" };
+        return new String[] { "/",
+        "/swagger-ui.html",
+        "/webjars/**",
+        "/v2/api-docs"};
     }
 
 }
